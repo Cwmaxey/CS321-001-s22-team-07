@@ -12,6 +12,30 @@ public class BTreeTest
     //  assert that the constructed tree has the expected number of nodes and
     //  assert that some (or all) of the nodes have the expected values
     @Test
+<<<<<<< Updated upstream
+=======
+    public void btreeInsertToFillRoot()
+    {
+        //using degree 2
+        BTree test = new BTree(2);
+        long A = 1;
+        long B = 2;
+        long C = 3;
+        test.BTree_Insert(A);
+        test.BTree_Insert(B);
+        test.BTree_Insert(C);
+        //Node should now be full and should return a size (?) of 3
+        assertEquals()
+
+
+    }
+    
+    
+    
+    
+    @Test
+
+>>>>>>> Stashed changes
     public void btreeDegree4Test()
     {
 //        //TODO instantiate and populate a bTree object

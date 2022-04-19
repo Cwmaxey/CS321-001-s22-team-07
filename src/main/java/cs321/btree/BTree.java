@@ -1,5 +1,8 @@
 package cs321.btree;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 // added in Comparable - alex
 public class BTree {
     public BTreeNode root; // Pointer to root node
@@ -28,24 +31,22 @@ public class BTree {
             this.keys = new TreeObject[(2 * t) - 1];
             this.n = 0;
         }
-
-
     }
 
     // Inserts into a BTree.
     // If full, splits the child then calls B_Tree_Insert_Nonfull.
-    private void BTree_Insert(BTree T, TreeObject k) {
-        BTreeNode r = T.root;
+    public void BTree_Insert(long k) {
+        BTreeNode r = this.root;
         int t = this.t;
         if (r.n == (2*t - 1)) {
             BTreeNode s = new BTreeNode(t, false);
-            T.root = s;
+            this.root = s;
             s.n = 0;
             s.C[1] = r;
             BTree_Split_Child(s, 1);
-            BTree_Insert_Nonfull(s, k.DNA);
+            BTree_Insert_Nonfull(s, k);
         } else {
-            BTree_Insert_Nonfull(r, k.DNA);
+            BTree_Insert_Nonfull(r, k);
         }
     }
 
@@ -60,7 +61,7 @@ public class BTree {
                 x.keys[i+1] = x.keys[i];
                 i--;
             }
-            x.keys[i+1].DNA = key;
+            x.keys[i+1] = new TreeObject(key);
             x.n = x.n+1;
             RandomAccessFileWrite(x);
         } else {
@@ -109,11 +110,42 @@ public class BTree {
 
     }
 
+    //toString returns string with contents of Keys with order
+    public String toString()
+    {
+
+        return null;
+    }
+
+
     // Gets an internal node using Level Order traversal.
-    public TreeObject GetNodeAtIndex(int j) {
-        // if i < 1
-        //  return error
-        // q = newQueue()
+    public String GetNodeAtIndex(int j) {
+        if(j<1)
+        {
+            return null;
+        }
+        Queue<BTreeNode> q = new LinkedList<BTreeNode>();
+        int i = 0;
+        while (!q.isEmpty()){
+            BTreeNode n = q.deQueue();
+            if(i==j)
+            {
+                return n.toString();
+            }
+            else
+            {
+                i++;
+            }
+            if(!n.leaf)
+            {
+                for(int c=1; c<this.C.getSize(); i++)
+                {
+                    BTreeNode child = RandomAccessFileRead(c);
+                    q.enQueue(n.child);
+                }
+            }
+        }
+        // q = newQueue()->queue interface using a list
         // q.enQueue(root)
         // while (!q.isEmpty())
         //  n = q.deQueue()
