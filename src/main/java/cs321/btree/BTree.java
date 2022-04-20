@@ -125,9 +125,10 @@ public class BTree {
             return null;
         }
         Queue<BTreeNode> q = new LinkedList<BTreeNode>();
+        q.add(this.root);
         int i = 0;
         while (!q.isEmpty()){
-            BTreeNode n = q.deQueue();
+            BTreeNode n = q.remove();
             if(i==j)
             {
                 return n.toString();
