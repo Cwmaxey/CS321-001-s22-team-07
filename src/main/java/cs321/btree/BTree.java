@@ -147,7 +147,7 @@ public class BTree {
             }
             if(!n.leaf)
             {
-                for(int c=1; c<this.C.getSize(); i++)
+                for(int c=1; c<n.childPointer.length; i++)
                 {
                     BTreeNode child = dummyLongToNode(RandomAccessFileRead(n.childPointer,c));
                     q.add(child);
