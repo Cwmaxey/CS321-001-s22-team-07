@@ -18,7 +18,7 @@ public class BTree {
 
     private class BTreeNode {
         public TreeObject keys[]; // Array of keys
-        public BTreeNode childPointer[]; // An array of child pointers
+        public long childPointer[]; // An array of child pointers
         int t; // degree t (max number of keys a node can have 2t-1)
         boolean leaf; // check if node is a leaf or not
         int n; // returns the number of keys in BTree
@@ -27,7 +27,7 @@ public class BTree {
         BTreeNode(int t, boolean leaf) {
             this.t = t;
             this.leaf = leaf;
-            this.childPointer = new BTreeNode[2 * t];
+            this.childPointer = new long[2 * t];
             this.keys = new TreeObject[(2 * t) - 1];
             this.n = 0;
 
@@ -83,7 +83,7 @@ public class BTree {
                     i++;
                 }
             }
-            BTreeNode child = x.childPointer[i];
+            BTreeNode child = dummyLongToNode(RandomAccessFileRead(x.childPointer,i));
             BTree_Insert_Nonfull(child, key);
         }
     }
@@ -149,8 +149,8 @@ public class BTree {
             {
                 for(int c=1; c<this.C.getSize(); i++)
                 {
-                    BTreeNode child = RandomAccessFileRead(c);
-                    q.enQueue(n.child);
+                    BTreeNode child = dummyLongToNode(RandomAccessFileRead(n.childPointer,c));
+                    q.add(child);
                 }
             }
         }
@@ -178,6 +178,12 @@ public class BTree {
     public long RandomAccessFileRead(long[] C, int index) {
         // btree.readLong()
         return 123456;
+    }
+
+    public BTreeNode dummyLongToNode(long convert)
+    {
+        BTreeNode temp = new BTreeNode(2, false);
+        return temp;
     }
 
 }
