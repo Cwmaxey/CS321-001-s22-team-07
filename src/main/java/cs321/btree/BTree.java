@@ -7,7 +7,7 @@ import java.util.Queue;
 public class BTree {
     public BTreeNode root; // Pointer to root node
     public int t; // Minimum degree
-
+    public BTreeNode currentChild;
     // Constructor for BTree class.
     BTree(int t) {
         BTreeNode x = new BTreeNode(t, true);
@@ -83,7 +83,7 @@ public class BTree {
                     i++;
                 }
             }
-            BTreeNode child = dummyLongToNode(RandomAccessFileRead(x.childPointer,i));
+            BTreeNode child = RandomAccessFileRead(x.childPointer,i);
             BTree_Insert_Nonfull(child, key);
         }
     }
@@ -149,7 +149,7 @@ public class BTree {
             {
                 for(int c=1; c<n.childPointer.length; i++)
                 {
-                    BTreeNode child = dummyLongToNode(RandomAccessFileRead(n.childPointer,c));
+                    BTreeNode child = RandomAccessFileRead(n.childPointer,c);
                     q.add(child);
                 }
             }
@@ -175,14 +175,10 @@ public class BTree {
     }
 
     // https://docs.oracle.com/javase/8/docs/api/java/io/RandomAccessFile.html#readLong--
-    public long RandomAccessFileRead(long[] C, int index) {
-        // btree.readLong()
-        return 123456;
-    }
-
-    public BTreeNode dummyLongToNode(long convert)
-    {
-        BTreeNode temp = new BTreeNode(2, false);
+    public BTreeNode RandomAccessFileRead(long[] C, int index) {
+        // TODO btree.readLong()
+        BTreeNode temp = this.currentChild;//instead of currentChild temp should be the ACTUAL child node
+        this.currentChild = temp; //sets currentChild to whatever was read
         return temp;
     }
 
