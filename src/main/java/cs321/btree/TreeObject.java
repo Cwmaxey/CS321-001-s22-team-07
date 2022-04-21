@@ -7,10 +7,20 @@ public class TreeObject
 {
     long DNA;
     int freq;
-    // Constructor
-    public TreeObject(long DNA){
+    // Constructors
+    public TreeObject (long DNAInp) {
+        DNA = DNAInp;
+        freq = 1;
+    }
+
+    public TreeObject(long DNA, int freq){
         this.DNA = DNA;
-        this.freq = 0;
+        this.freq = freq;
+    }
+
+    public TreeObject() {
+        this.DNA = -1L;
+        freq = 0;
     }
 
     // Get the key from the TreeObject.
