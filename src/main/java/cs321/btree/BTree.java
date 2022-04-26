@@ -121,8 +121,11 @@ public class BTree {
     //toString returns string with contents of Keys with order
     public String toString()
     {
-
-        return null;
+        String treeString="";
+        //Use Inorder traversal to print the tree from left to right
+        //Format: keys separated by commas
+        
+        return treeString;
     }
 
 
