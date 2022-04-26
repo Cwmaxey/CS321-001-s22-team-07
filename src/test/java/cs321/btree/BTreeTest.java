@@ -16,23 +16,15 @@ public class BTreeTest
     public void btreeInsertToFillRoot()
     {
         //using degree 2
-        BTreeNode test = new BTreeNode();
-        TreeObject A = new TreeObject(DNA);
-        TreeObject B = new TreeObject(DNA);
-        TreeObject C = new TreeObject(DNA);
-
+        BTree test = new BTree(2);
+        long A = 1;
+        long B = 2;
+        long C = 3;
         test.BTree_Insert(A);
         test.BTree_Insert(B);
-        test.BTree_Insert(c);
+        test.BTree_Insert(C);
         //Node should now be full and should return a size (?) of 3
-        if(test.getSize()==3)
-        {
-            assert(true);
-        }
-        else
-        {
-            assert(false);
-        }
+        assertEquals()
 
 
     }
