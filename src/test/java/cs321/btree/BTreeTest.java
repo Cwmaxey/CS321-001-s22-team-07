@@ -15,9 +15,7 @@ public class BTreeTest
     @Test
     public void btreeInsertToFillRoot()
     {   
-        String expString1 = "Node A";
-        String expString2 = "Node B";
-        String expString3 = "Node C";
+       
         //using degree 2
         BTree test = new BTree(2);
         long A = 1;
@@ -26,9 +24,9 @@ public class BTreeTest
         test.BTree_Insert(A);
         test.BTree_Insert(B);
         test.BTree_Insert(C);
+        String expString1 = A+","+B+","+C;
         //Node should now be full and have objects [A B C] in that order
-        assert(test.GetNodeAtIndex(1)==expString1&&test.GetNodeAtIndex(2)==expString2
-        && test.GetNodeAtIndex(3)==expString3);
+        assert(test.toString().equals(expString1));
     } 
         
     
