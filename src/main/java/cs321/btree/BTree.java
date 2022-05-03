@@ -16,18 +16,19 @@ public class BTree {
         this.t = t;
     }
 
-    private class BTreeNode {
+    public class BTreeNode {
         public TreeObject keys[]; // Array of keys
-        public long childPointer[]; // An array of child pointers
+        public long childPointers[]; // An array of child pointers
         int t; // degree t (max number of keys a node can have 2t-1)
         boolean leaf; // check if node is a leaf or not
         int n; // returns the number of keys in BTree
-        long addressSelf;
+        long addressSelf; // Holds a pointer to the nodes position
+        long parentPointer; // Holds a pointer to the parent
 
-        BTreeNode(int t, boolean leaf) {
+        BTreeNode(int t, long parent, long addressSelf) {
             this.t = t;
-            this.leaf = leaf;
-            this.childPointer = new long[2 * t];
+            this.leaf = true;
+            this.childPointers = new long[2 * t];
             this.keys = new TreeObject[(2 * t) - 1];
             this.n = 0;
 
@@ -35,6 +36,18 @@ public class BTree {
 
         private long accessAddressSelf() {
             return this.addressSelf;
+        }
+
+        public boolean isLeaf() {
+            return leaf;
+        }
+
+        public BTreeNode getParent() {
+            if (parentPointer == -1L) 
+                return null; // current node is root
+
+            return null; // This needs to load the noad from storage once we have that implemented.
+            
         }
 
     }
@@ -62,26 +75,31 @@ public class BTree {
         // If x is not a leaf node then we insert k into the appropriate leaf node in
         // the subtree
         // that is rooted at internal node x.
-        int i = x.n;
-        if (x.leaf) {
-            while (i >= 1 && key < x.keys[i].DNA) {
-                x.keys[i + 1] = x.keys[i];
+        int i = x.n - 1;
+        if (x.isLeaf()) {
+            while (i >= 0 && key < x.keys[i].getKey()) {
+                x.keys[i + 1] = new TreeObject(x.keys[i].getKey(), x.keys[i].getFreq());
                 i--;
             }
-            x.keys[i + 1].DNA = key;
-            x.n = x.n + 1;
+            x.keys[i + 1] = new TreeObject(key);
+            x.n++;
             RandomAccessFileWrite(x);
         } else {
-            while (i >= 1 && key < x.keys[i].DNA) {
+            while (i >= 0 && key < x.keys[i].getKey()) {
                 i--;
             }
             i++;
-            RandomAccessFileRead(x.childPointer, i);
-            if (x.childPointer[i].n == (2 * t - 1)) {
-                BTree_Split_Child(x, i);
-                if (key > x.keys[i].DNA) {
-                    i++;
+            BTreeNode child;
+            if (x.childPointers[i] != -1) {
+                child = RandomAccessFileRead(x.childPointers, i);
+                if (child.n == 2*t-1) {
+                    BTree_Split_Child(x, i, child);
+                    if (key > x.keys[i].getKey()) {
+                        i++;
+                    }
                 }
+                BTreeNode newNode = RandomAccessFileRead(x.childPointers, i);
+                BTree_Insert_Nonfull(newNode, key); 
             }
             BTreeNode child = RandomAccessFileRead(x.childPointer,i);
             BTree_Insert_Nonfull(child, key);
@@ -91,9 +109,45 @@ public class BTree {
     // BTree_Split_Child splits a node that is full
     // based on degree t.
     // writes to disk if successful
-    private void BTree_Split_Child(BTreeNode x, int key) {
+    // x is the parent of y, y is the node being split.
+    // z represents the new node which is half of y's keys/children
+    // -1L indicates an empty TreeObject
+    private void BTree_Split_Child(BTreeNode x, int key, BTreeNode y) {
+        BTreeNode z = new BTreeNode(t, y.parentPointer, key);
+        z.leaf = y.isLeaf();
+        z.n = t-1;
+        RandomAccessFileWrite(z);
 
-    }
+        for (int i = 0; i < t-1; i++) {
+            z.keys[i] = new TreeObject(y.keys[i+t].getKey(), x.keys[i].getFreq());
+            y.keys[i+t] = new TreeObject();
+        }
+        if (!y.isLeaf()) {
+            for (int i = 0; i < t; i++) {
+                z.childPointers[i] = y.childPointers[i+t];
+                y.childPointers[i+t] = -1L;
+            }
+        }
+
+        // Number of keys under node being split
+        y.n = t-1;
+        for (int i = x.n; i > key; i--) {
+            x.childPointers[i+1] = x.childPointers[i];
+            x.childPointers[i] = -1L;
+        }
+
+        x.childPointers[key+1] = z.addressSelf;
+        for (int i = x.n-1; i > key-1; i--) {
+            x.keys[i+1] = new TreeObject(x.keys[i].getKey(), x.keys[i].getFreq());
+        }
+        x.keys[key] = new TreeObject(y.keys[t-1].getKey(), y.keys[t-1].getFreq());
+        y.keys[t-1] = new TreeObject();
+        x.n = x.n+1;
+        RandomAccessFileWrite(z);
+        RandomAccessFileWrite(y);
+        RandomAccessFileWrite(x);
+
+    }   
 
     // BTree_Search looks for a node with key k in a given node x.
     private TreeObject BTree_Search(BTreeNode x, int key) {
@@ -112,7 +166,7 @@ public class BTree {
         } else if (x.leaf) {
             return null;
         } else {
-            RandomAccessFileRead(x.childPointer, i);
+            RandomAccessFileRead(x.childPointers, i);
             return BTree_Search(x, i);
         }
 
