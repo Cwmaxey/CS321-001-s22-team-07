@@ -1,10 +1,13 @@
 package cs321.btree;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 // added in Comparable - alex
 public class BTree {
     public BTreeNode root; // Pointer to root node
     public int t; // Minimum degree
-
+    public BTreeNode currentChild;
     // Constructor for BTree class.
     BTree(int t) {
         BTreeNode x = new BTreeNode(t, true);
@@ -51,18 +54,18 @@ public class BTree {
 
     // Inserts into a BTree.
     // If full, splits the child then calls B_Tree_Insert_Nonfull.
-    private void BTree_Insert(BTree T, TreeObject k) {
-        BTreeNode r = T.root;
+    public void BTree_Insert(long k) {
+        BTreeNode r = this.root;
         int t = this.t;
         if (r.n == (2 * t - 1)) {
             BTreeNode s = new BTreeNode(t, false);
-            T.root = s;
+            this.root = s;
             s.n = 0;
             s.childPointer[1] = r;
             BTree_Split_Child(s, 1);
-            BTree_Insert_Nonfull(s, k.DNA);
+            BTree_Insert_Nonfull(s, k);
         } else {
-            BTree_Insert_Nonfull(r, k.DNA);
+            BTree_Insert_Nonfull(r, k);
         }
     }
 
@@ -98,6 +101,8 @@ public class BTree {
                 BTreeNode newNode = RandomAccessFileRead(x.childPointers, i);
                 BTree_Insert_Nonfull(newNode, key); 
             }
+            BTreeNode child = RandomAccessFileRead(x.childPointer,i);
+            BTree_Insert_Nonfull(child, key);
         }
     }
 
@@ -167,11 +172,43 @@ public class BTree {
 
     }
 
+    //toString returns string with contents of Keys with order
+    public String toString()
+    {
+
+        return null;
+    }
+
+
     // Gets an internal node using Level Order traversal.
-    public TreeObject GetNodeAtIndex(int j) {
-        // if i < 1
-        // return error
-        // q = newQueue()
+    public String GetNodeAtIndex(int j) {
+        if(j<1)
+        {
+            return null;
+        }
+        Queue<BTreeNode> q = new LinkedList<BTreeNode>();
+        q.add(this.root);
+        int i = 0;
+        while (!q.isEmpty()){
+            BTreeNode n = q.remove();
+            if(i==j)
+            {
+                return n.toString();
+            }
+            else
+            {
+                i++;
+            }
+            if(!n.leaf)
+            {
+                for(int c=1; c<n.childPointer.length; i++)
+                {
+                    BTreeNode child = RandomAccessFileRead(n.childPointer,c);
+                    q.add(child);
+                }
+            }
+        }
+        // q = newQueue()->queue interface using a list
         // q.enQueue(root)
         // while (!q.isEmpty())
         // n = q.deQueue()
@@ -193,8 +230,10 @@ public class BTree {
 
     // https://docs.oracle.com/javase/8/docs/api/java/io/RandomAccessFile.html#readLong--
     public BTreeNode RandomAccessFileRead(long[] C, int index) {
-        // btree.readLong()
-        return null;
+        // TODO btree.readLong()
+        BTreeNode temp = this.currentChild;//instead of currentChild temp should be the ACTUAL child node
+        this.currentChild = temp; //sets currentChild to whatever was read
+        return temp;
     }
 
 }
