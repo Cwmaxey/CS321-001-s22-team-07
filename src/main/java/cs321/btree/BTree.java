@@ -9,11 +9,15 @@ public class BTree {
     public int t; // Minimum degree
     public BTreeNode currentChild;
     // Constructor for BTree class.
-    BTree(int t) {
+    public BTree(int t) {
         BTreeNode x = new BTreeNode(t, true);
         RandomAccessFileWrite(x);
         this.root = x;
         this.t = t;
+    }
+
+    public BTreeNode getRoot() {
+        return this.root;
     }
 
     public class BTreeNode {
@@ -25,9 +29,19 @@ public class BTree {
         long addressSelf; // Holds a pointer to the nodes position
         long parentPointer; // Holds a pointer to the parent
 
-        BTreeNode(int t, long parent, long addressSelf) {
+        public BTreeNode(int t, long parent, long addressSelf) {
             this.t = t;
             this.leaf = true;
+            this.childPointers = new long[2 * t];
+            this.keys = new TreeObject[(2 * t) - 1];
+            this.n = 0;
+            this.parentPointer = parent;
+            this.addressSelf = addressSelf;
+        }
+
+        public BTreeNode(int t, boolean leaf) {
+            this.t = t;
+            this.leaf = leaf;
             this.childPointers = new long[2 * t];
             this.keys = new TreeObject[(2 * t) - 1];
             this.n = 0;
@@ -61,8 +75,8 @@ public class BTree {
             BTreeNode s = new BTreeNode(t, false);
             this.root = s;
             s.n = 0;
-            s.childPointer[1] = r;
-            BTree_Split_Child(s, 1);
+            s.childPointers[1] = r.addressSelf;
+            BTree_Split_Child(s, 1, r);
             BTree_Insert_Nonfull(s, k);
         } else {
             BTree_Insert_Nonfull(r, k);
@@ -93,7 +107,7 @@ public class BTree {
             if (x.childPointers[i] != -1) {
                 child = RandomAccessFileRead(x.childPointers, i);
                 if (child.n == 2*t-1) {
-                    BTree_Split_Child(x, i, child);
+                    BTree_Split_Child(child, i, x);
                     if (key > x.keys[i].getKey()) {
                         i++;
                     }
@@ -101,8 +115,8 @@ public class BTree {
                 BTreeNode newNode = RandomAccessFileRead(x.childPointers, i);
                 BTree_Insert_Nonfull(newNode, key); 
             }
-            BTreeNode child = RandomAccessFileRead(x.childPointer,i);
-            BTree_Insert_Nonfull(child, key);
+            BTreeNode childInsert = RandomAccessFileRead(x.childPointers,i);
+            BTree_Insert_Nonfull(childInsert, key);
         }
     }
 
@@ -201,9 +215,9 @@ public class BTree {
             }
             if(!n.leaf)
             {
-                for(int c=1; c<n.childPointer.length; i++)
+                for(int c=1; c<n.childPointers.length; i++)
                 {
-                    BTreeNode child = RandomAccessFileRead(n.childPointer,c);
+                    BTreeNode child = RandomAccessFileRead(n.childPointers,c);
                     q.add(child);
                 }
             }
