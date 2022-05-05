@@ -29,7 +29,7 @@ public class BTreeTest
     } 
     
     @Test
-    public void btree_ABC_insertD_BACD()
+    public void btree_ABC_insertD_ABCD()
     {   
         //using degree 2
         BTree test = new BTree(2);
@@ -46,7 +46,7 @@ public class BTreeTest
     } 
 
     @Test
-    public void btree_BACDE_insertF_BDACEF()
+    public void btree_ABCDE_insertF_ABCDEF()
     {   
         //using degree 2
         BTree test = new BTree(2);
@@ -67,7 +67,7 @@ public class BTreeTest
     } 
 
     @Test
-    public void btree_BDEACF_insertGH_BDFACEGH()
+    public void btree_ABCDEF_insertGH_ABCDEFGH()
     {   
         //using degree 2
         BTree test = new BTree(2);
@@ -93,7 +93,7 @@ public class BTreeTest
     
 
     @Test
-    public void btree_BDFACEGH_insertIJK_DBFHACEGIJK()
+    public void btree_ABCDEFGH_insertIJK_ABCDEFGHIJK()
     {   
         //using degree 2
         BTree test = new BTree(2);
