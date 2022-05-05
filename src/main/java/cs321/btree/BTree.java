@@ -64,6 +64,17 @@ public class BTree {
             
         }
 
+        //toString returns string with contents of Keys with order
+    public String toString()
+    {
+        String ret = "";
+        for(int i=0; i<this.keys.length; i++)
+        {
+            ret +=keys[i] + ",";
+        }
+        return ret;
+    }
+
     }
 
     // Inserts into a BTree.
@@ -186,12 +197,7 @@ public class BTree {
 
     }
 
-    //toString returns string with contents of Keys with order
-    public String toString()
-    {
-
-        return null;
-    }
+    
 
 
     // Gets an internal node using Level Order traversal.
