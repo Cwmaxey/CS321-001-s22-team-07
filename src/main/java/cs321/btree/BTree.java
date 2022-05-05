@@ -86,7 +86,7 @@ public class BTree {
             BTreeNode s = new BTreeNode(t, false);
             this.root = s;
             s.n = 0;
-            s.childPointers[1] = r.addressSelf;
+            s.childPointers[0] = r.addressSelf;
             BTree_Split_Child(s, 1, r);
             BTree_Insert_Nonfull(s, k);
         } else {
