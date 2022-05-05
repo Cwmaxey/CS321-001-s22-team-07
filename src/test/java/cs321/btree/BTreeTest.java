@@ -13,8 +13,8 @@ public class BTreeTest
     //  assert that the constructed tree has the expected number of nodes and
     //  assert that some (or all) of the nodes have the expected values
     @Test
-    public void btree_empty_insertABC_ABC()
-    {   
+    public void btreeInsertToFillRoot()
+    {
         //using degree 2
         BTree test = new BTree(2);
         long A = 1;
@@ -23,27 +23,9 @@ public class BTreeTest
         test.BTree_Insert(A);
         test.BTree_Insert(B);
         test.BTree_Insert(C);
-        String expString1 = A+","+B+","+C;
-        //Node should now be full and have objects [A B C] in that order
-        System.out.println(test.toString());
-        assert(test.toString().equals(expString1));
-    } 
-    
-    @Test
-    public void btree_ABC_insertD_ABCD()
-    {   
-        //using degree 2
-        BTree test = new BTree(2);
-        long A = 1;
-        long B = 2;
-        long C = 3;
-        long D = 4;
-        test.BTree_Insert(A);
-        test.BTree_Insert(B);
-        test.BTree_Insert(C);
-        test.BTree_Insert(D);
+
         //Node should now be full and have objects [B A C D] in that order 1->4
-        assert(test.GetNodeAtIndex(4).equals(D));
+        assertEquals(C,test.GetNodeAtIndex(3));
     } 
 
     @Test
