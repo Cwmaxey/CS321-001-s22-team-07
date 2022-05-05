@@ -142,7 +142,6 @@ public class BTree {
         z.leaf = y.isLeaf();
         z.n = t-1;
         RandomAccessFileWrite(z);
-
         for (int i = 0; i < t-1; i++) {
             z.keys[i] = new TreeObject(y.keys[i+t].getKey(), x.keys[i].getFreq());
             y.keys[i+t] = new TreeObject();

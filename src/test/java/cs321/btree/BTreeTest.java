@@ -14,7 +14,10 @@ public class BTreeTest
     //  assert that some (or all) of the nodes have the expected values
     @Test
     public void btreeInsertToFillRoot()
-    {
+    {   
+        String expString1 = "Node A";
+        String expString2 = "Node B";
+        String expString3 = "Node C";
         //using degree 2
         BTree test = new BTree(2);
         long A = 1;
@@ -71,6 +74,7 @@ public class BTreeTest
         //Node at 8 should be H, 7 should be G
         assert(test.GetNodeAtIndex(8).equals(H)&&test.GetNodeAtIndex(7).equals(G));
     } 
+
     
 
     @Test
