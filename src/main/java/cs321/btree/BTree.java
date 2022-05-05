@@ -89,6 +89,17 @@ public class BTree {
             return this.n;
         }
 
+        //toString returns string with contents of Keys with order
+    public String toString()
+    {
+        String ret = "";
+        for(int i=0; i<this.keys.length; i++)
+        {
+            ret +=keys[i] + ",";
+        }
+        return ret;
+    }
+
     }
 
     // Inserts into a BTree.
@@ -158,12 +169,11 @@ public class BTree {
     public void BTree_Split_Child(BTreeNode x, int key, BTreeNode y) {
         BTreeNode z = new BTreeNode(t, y.parentPointer, key);
         z.leaf = y.isLeaf();
-        z.n = t - 1;
-        // RandomAccessFileWrite(z);
-
-        for (int i = 0; i < t - 1; i++) {
-            z.keys[i] = new TreeObject(y.keys[i + t].getKey(), x.keys[i].getFreq());
-            y.keys[i + t] = new TreeObject();
+        z.n = t-1;
+        RandomAccessFileWrite(z);
+        for (int i = 0; i < t-1; i++) {
+            z.keys[i] = new TreeObject(y.keys[i+t].getKey(), x.keys[i].getFreq());
+            y.keys[i+t] = new TreeObject();
         }
         if (!y.isLeaf()) {
             for (int i = 0; i < t; i++) {
@@ -215,12 +225,7 @@ public class BTree {
 
     }
 
-    //toString returns string with contents of Keys with order
-    public String toString()
-    {
-
-        return null;
-    }
+    
 
 
     // Gets an internal node using Level Order traversal.
