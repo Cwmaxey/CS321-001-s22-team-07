@@ -19,8 +19,13 @@ public class BTree {
     public BTree(int t) {
         BTreeNode x = new BTreeNode(t);
         // RandomAccessFileWrite(x);
+
         this.root = x;
         this.t = t;
+    }
+
+    public BTreeNode getRoot() {
+        return this.root;
     }
 
     public class BTreeNode {
@@ -51,6 +56,7 @@ public class BTree {
                 n++;
             }
         }
+
 
         public BTreeNode(int t) {
             this.t = t;
@@ -97,8 +103,9 @@ public class BTree {
             s.childPointers[1] = r.addressSelf; // setting child of new root to previous root
             BTree_Split_Child(s, 1, r);
             BTree_Insert_Nonfull(s, k.DNA);
+
         } else {
-            BTree_Insert_Nonfull(r, k.DNA);
+            BTree_Insert_Nonfull(r, k);
         }
     }
 
@@ -126,8 +133,10 @@ public class BTree {
             BTreeNode child;
             if (x.childPointers[i] != -1) {
                 child = RandomAccessFileRead(x.childPointers, i);
-                if (child.n == 2 * t - 1) {
-                    BTree_Split_Child(x, i, child);
+
+                if (child.n == 2*t-1) {
+                    BTree_Split_Child(child, i, x);
+                  
                     if (key > x.keys[i].getKey()) {
                         i++;
                     }
@@ -135,6 +144,8 @@ public class BTree {
                 BTreeNode newNode = RandomAccessFileRead(x.childPointers, i);
                 BTree_Insert_Nonfull(newNode, key);
             }
+            BTreeNode childInsert = RandomAccessFileRead(x.childPointers,i);
+            BTree_Insert_Nonfull(childInsert, key);
         }
     }
 
@@ -204,11 +215,43 @@ public class BTree {
 
     }
 
+    //toString returns string with contents of Keys with order
+    public String toString()
+    {
+
+        return null;
+    }
+
+
     // Gets an internal node using Level Order traversal.
-    public TreeObject GetNodeAtIndex(int j) {
-        // if i < 1
-        // return error
-        // q = newQueue()
+    public String GetNodeAtIndex(int j) {
+        if(j<1)
+        {
+            return null;
+        }
+        Queue<BTreeNode> q = new LinkedList<BTreeNode>();
+        q.add(this.root);
+        int i = 0;
+        while (!q.isEmpty()){
+            BTreeNode n = q.remove();
+            if(i==j)
+            {
+                return n.toString();
+            }
+            else
+            {
+                i++;
+            }
+            if(!n.leaf)
+            {
+                for(int c=1; c<n.childPointers.length; i++)
+                {
+                    BTreeNode child = RandomAccessFileRead(n.childPointers,c);
+                    q.add(child);
+                }
+            }
+        }
+        // q = newQueue()->queue interface using a list
         // q.enQueue(root)
         // while (!q.isEmpty())
         // n = q.deQueue()
