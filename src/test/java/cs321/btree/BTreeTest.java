@@ -25,6 +25,7 @@ public class BTreeTest
         test.BTree_Insert(C);
         String expString1 = A+","+B+","+C;
         //Node should now be full and have objects [A B C] in that order
+        System.out.println(test.toString());
         assert(test.toString().equals(expString1));
     } 
     

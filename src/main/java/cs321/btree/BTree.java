@@ -250,7 +250,6 @@ public class BTree {
 
     // https://docs.oracle.com/javase/8/docs/api/java/io/RandomAccessFile.html#readLong--
     public BTreeNode RandomAccessFileRead(long[] C, int index) {
-        // TODO btree.readLong()
         BTreeNode temp = this.currentChild;//instead of currentChild temp should be the ACTUAL child node
         this.currentChild = temp; //sets currentChild to whatever was read
         return temp;
