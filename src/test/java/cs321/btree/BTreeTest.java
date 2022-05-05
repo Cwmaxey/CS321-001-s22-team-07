@@ -23,8 +23,6 @@ public class BTreeTest
         test.BTree_Insert(A);
         test.BTree_Insert(B);
         test.BTree_Insert(C);
-
-        //Node should now be full and have objects [B A C D] in that order 1->4
         assertEquals(C,test.GetNodeAtIndex(3));
     } 
 
