@@ -111,7 +111,7 @@ public class BTree {
             BTreeNode s = new BTreeNode(t);
             T.root = s;
             s.n = 0;
-            s.childPointers[1] = r.addressSelf; // setting child of new root to previous root
+            s.childPointers[0] = r.addressSelf;
             BTree_Split_Child(s, 1, r);
             BTree_Insert_Nonfull(s, k.DNA);
 
@@ -359,6 +359,7 @@ public class BTree {
         }
 
         return node;
+
     }
 
 }
