@@ -157,7 +157,7 @@ public class GeneBankCreateBTree
 					endFound = true;
 				}
 
-				else if(line.substring(0,6).equals("ORIGIN") && !startFound && !endFound)
+				else if(line.contains("ORIGIN") && !startFound && !endFound)
 				{
 					startFound = true;
 					endFound = false;
