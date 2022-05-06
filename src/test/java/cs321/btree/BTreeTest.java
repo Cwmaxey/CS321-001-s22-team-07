@@ -12,6 +12,16 @@ public class BTreeTest
     //  you can check the final state of the tree and
     //  assert that the constructed tree has the expected number of nodes and
     //  assert that some (or all) of the nodes have the expected values
+    public static void main(String[] args){
+        BTree test = new BTree(2);
+        long A = 1;
+        long B = 2;
+        long C = 3;
+        test.BTree_Insert(A);
+        test.BTree_Insert(B);
+        test.BTree_Insert(C);
+        assertEquals(C,test.GetNodeAtIndex(2));   
+    }
     @Test
     public void btreeInsertToFillRoot()
     {   
@@ -26,7 +36,7 @@ public class BTreeTest
         test.BTree_Insert(A);
         test.BTree_Insert(B);
         test.BTree_Insert(C);
-        assertEquals(C,test.GetNodeAtIndex(3));
+        assertEquals(C,test.GetNodeAtIndex(2));
     } 
 
     @Test

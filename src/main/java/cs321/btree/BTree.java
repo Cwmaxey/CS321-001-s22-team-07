@@ -117,10 +117,13 @@ public class BTree {
             BTreeNode child;
             if (x.childPointers[i] != -1) {
                 child = RandomAccessFileRead(x.childPointers, i);
-                if (child.n == 2*t-1) {
-                    BTree_Split_Child(child, i, x);
-                    if (key > x.keys[i].getKey()) {
-                        i++;
+                if(child !=null)
+                {
+                    if (child.n == 2*t-1) {
+                        BTree_Split_Child(child, i, x);
+                        if (key > x.keys[i].getKey()) {
+                            i++;
+                        }
                     }
                 }
                 BTreeNode newNode = RandomAccessFileRead(x.childPointers, i);
@@ -141,7 +144,7 @@ public class BTree {
         BTreeNode z = new BTreeNode(t, y.parentPointer, key);
         z.leaf = y.isLeaf();
         z.n = t-1;
-        RandomAccessFileWrite(z);
+        //RandomAccessFileWrite(z);
         for (int i = 0; i < t-1; i++) {
             z.keys[i] = new TreeObject(y.keys[i+t].getKey(), x.keys[i].getFreq());
             y.keys[i+t] = new TreeObject();
