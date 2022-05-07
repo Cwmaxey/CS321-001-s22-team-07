@@ -3,7 +3,7 @@
 Last Name       | First Name      | GitHub User Name
 --------------- | --------------- | --------------------
 Maxey           | Conner          | Cwmaxey
-TBD             | TBD             | TBD
+Lambert         | Jessica         | jessica-lambert
 TBD             | TBD             | TBD
 TBD             | TBD             | TBD
 TBD             | TBD             | TBD
